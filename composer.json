@@ -2,6 +2,7 @@
     "name": "jongharvey/mocha-database",
     "description": "Mocha Framework - Database",
     "license": "MIT",
+    "homepage": "https://github.com/jongharvey/mocha-router",
     "authors": [
         {
             "name": "Jon",
