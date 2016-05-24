@@ -1,0 +1,12 @@
+{
+    "name": "jongharvey/mocha-database",
+    "description": "Mocha Framework - Database",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Jon",
+            "email": "jonathan.g.harvey@outlook.com"
+        }
+    ],
+    "require": {}
+}
