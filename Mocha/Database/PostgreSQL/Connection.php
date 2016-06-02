@@ -24,14 +24,13 @@ class Connection extends IConnection {
 			throw new Exception("Error while connecting to database server");
 	}
 
-	function query($query) {
-		if (func_num_args() > 1) {
-			$args = func_get_args();
-			$params = array_splice($args, 1);
+	function query($query, ...$params) {
+		$this->lastQuery = $query;
+		if (sizeof($params) > 0) {
 			$result = @pg_query_params($this->conn, $query, $params);
 		} else
 			$result = @pg_query($this->conn, $query);
-		//die($query);
+		
 		if (!$result)
 			throw new Exception("Query failed due to error: " . pg_last_error() . "\nQuery was:\n" . $query);
 

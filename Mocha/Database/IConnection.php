@@ -22,8 +22,19 @@ abstract class IConnection {
 			DbConnections::$default = $this;
 	}
 
+	/**
+	 * Connect to the server
+	 * @return null
+	 */
 	abstract function connect();
-	abstract function query($query);
+
+	/**
+	 * @param $query string Query string
+	 * @param array ...$params
+	 * @return IResult Result
+	 */
+	abstract function query($query, ...$params);
+	
 	abstract function insert($table, array $columns, $keys = 'id');
 	abstract function update($table, array $columns, $keys = 'id');
 	abstract function insertId();

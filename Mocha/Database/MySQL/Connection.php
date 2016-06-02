@@ -22,12 +22,10 @@ class Connection extends IConnection{
 		$this->conn->set_charset('utf8');
 	}
 
-	function query($query) {
+	function query($query, ...$params) {
 		$this->connect();
-		if (func_num_args() > 1) {
-			$args = func_get_args();
-			$params = array_splice($args, 1);
-			$idx = array();
+		if (sizeof($params) > 0) {
+			$idx = [];
 			$has_dollar = false;
 			foreach ($params as $i => &$val) {
 				if (strpos($val, '$') !== false) {
