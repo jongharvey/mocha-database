@@ -3,30 +3,13 @@
 namespace Mocha\Database\MySQL;
 
 use Exception;
+use Mocha\Database\IConnection;
 use mysqli;
 use Mocha\Database\DbConnections;
 
-class Connection {
-	/** @var  Result */
-	protected $lastResult;
-
-	/** @var  string Last query executed */
-	protected $lastQuery;
-
+class Connection extends IConnection{
 	/** @var mysqli */
 	public $conn;
-
-	protected $host, $user, $pass, $database;
-
-	function __construct($host, $user, $pass, $database) {
-		$this->host = $host;
-		$this->user = $user;
-		$this->pass = $pass;
-		$this->database = $database;
-
-		if (!DbConnections::$default)
-			DbConnections::$default = $this;
-	}
 
 	function connect() {
 		if ($this->conn)

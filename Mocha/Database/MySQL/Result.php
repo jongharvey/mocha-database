@@ -2,9 +2,10 @@
 
 namespace Mocha\Database\MySQL;
 
+use Mocha\Database\IResult;
 use mysqli_result;
 
-class Result {
+class Result extends IResult {
 	var $result;
 
 	function __construct(mysqli_result $res) {
