@@ -13,7 +13,7 @@ class Connection extends IConnection {
 	protected $conn;
 
 	protected $lastId;
-	
+
 	/**
 	 * @var resource Result from pg_query
 	 */
@@ -25,12 +25,15 @@ class Connection extends IConnection {
 	}
 
 	function query($query, ...$params) {
+		if (!$this->conn)
+			$this->connect();
+		
 		$this->lastQuery = $query;
 		if (sizeof($params) > 0) {
 			$result = @pg_query_params($this->conn, $query, $params);
 		} else
 			$result = @pg_query($this->conn, $query);
-		
+
 		if (!$result)
 			throw new Exception("Query failed due to error: " . pg_last_error() . "\nQuery was:\n" . $query);
 
@@ -55,17 +58,17 @@ class Connection extends IConnection {
 		foreach ($columns as $col => $val) {
 			if ($col == $keys && empty($val))
 				continue;
-			
+
 			$cols[] = '"' . $col . '"';
 			$phs[] = '$' . sizeof($cols);
 			$vals[] = ($val === false || $val === null)
 				? null
 				: (get_magic_quotes_gpc() ? stripslashes($val) : $val);
 		}
-		
+
 		$query = sprintf('INSERT INTO $table (%s) VALUES (%s) RETURNING "%s"',
 			implode(', ', $cols), implode(', ', $phs), $keys);
-		
+
 		$result = $this->query($query, $vals);
 		$this->lastId = $result->value();
 		return $result;
@@ -74,7 +77,7 @@ class Connection extends IConnection {
 	public function update($table, array $columns, $keys = 'id') {
 		if (!is_array($columns) || empty($keys))
 			throw new Exception("Insert object is not a valid data array.");
-		
+
 		/* Clean up the table name, in case we're using a separate schema */
 		$table = explode('.', $table);
 		foreach ($table as &$part)
