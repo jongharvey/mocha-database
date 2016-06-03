@@ -27,7 +27,7 @@ class Connection extends IConnection {
 	function query($query, ...$params) {
 		if (!$this->conn)
 			$this->connect();
-		
+
 		$this->lastQuery = $query;
 		if (sizeof($params) > 0) {
 			$result = @pg_query_params($this->conn, $query, $params);
@@ -66,8 +66,8 @@ class Connection extends IConnection {
 				: (get_magic_quotes_gpc() ? stripslashes($val) : $val);
 		}
 
-		$query = sprintf('INSERT INTO $table (%s) VALUES (%s) RETURNING "%s"',
-			implode(', ', $cols), implode(', ', $phs), $keys);
+		$query = sprintf('INSERT INTO %s (%s) VALUES (%s) RETURNING "%s"',
+			$table, implode(', ', $cols), implode(', ', $phs), $keys);
 
 		$result = $this->query($query, $vals);
 		$this->lastId = $result->value();
